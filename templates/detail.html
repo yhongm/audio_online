@@ -1,0 +1,67 @@
+{% extends "_base.html" %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+                <h3>
+                    {{ adls[0].audio_list_db.audio_info_title }}
+                </h3>
+                <img alt="Bootstrap Image Preview" class="img-thumbnail img-rounded"
+                     src="{{ "http://www.520tingshu.com/"+adls[0].audio_list_db.audio_info_preimg }}"/>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+                <div class="list-group">
+                    <a href="#" class="list-group-item active">Home</a>
+                    <div class="list-group-item" onclick="test({{ adls[0].audio_list_db_id }})">
+                        List header
+                    </div>
+                    {% for adl in adls %}
+                        <div class="list-group-item">
+                            <h4>
+                                {{ adl.audio_detail_title }}
+                            </h4>
+                        </div>
+                    {% endfor %}
+                    <div class="list-group-item">
+                        <span class="badge">{{ adls|length }}</span>Help
+                    </div>
+                    <a class="list-group-item active"><span class="badge">14</span>Help</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script type="application/javascript">
+
+        {#$(".list-group-item").on("click", function () {#}
+        {#    $(".list-group-item").removeClass("active");#}
+        {#    $(this).addClass("active")#}
+        {##}
+        {#    var items = document.getElementsByClassName("list-group-item active");#}
+        {#    if (items != undefined && items.length === 1) {#}
+        {#        console.log("selected item is:", items[0]);#}
+        {##}
+        {#    }#}
+        {#})
+        #}
+
+        function test(id) {
+            {#alert("alds:" + alds)#}
+            var html = "../go_audio_play?id=" + id
+            window.location.href = html
+        }
+
+    </script>
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends "bootstrap/base.html" %}
+{% block content %}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="user-scalable=no">
+        <title>Howler.js Audio Player</title>
+        <link rel="stylesheet" href="./static/css/styles.css">
+    </head>
+    <body>
+    <!-- Top Info -->
+    <div id="title">
+        <span id="track"></span>
+        <div id="timer">0:00</div>
+        <div id="duration">0:00</div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controlsOuter">
+        <div class="controlsInner">
+            <div id="loading"></div>
+            <div class="btn" id="playBtn"></div>
+            <div class="btn" id="pauseBtn"></div>
+            <div class="btn" id="prevBtn"></div>
+            <div class="btn" id="nextBtn"></div>
+        </div>
+        <div class="btn" id="playlistBtn"></div>
+        <div class="btn" id="volumeBtn"></div>
+    </div>
+
+    <!-- Progress -->
+    <div id="waveform"></div>
+    <div id="bar"></div>
+    <div id="progress"></div>
+
+    <!-- Playlist -->
+    <div id="playlist">
+        <div id="list"></div>
+    </div>
+
+    <!-- Volume -->
+    <div id="volume" class="fadeout">
+        <div id="barFull" class="bar"></div>
+        <div id="barEmpty" class="bar"></div>
+        <div id="sliderBtn"></div>
+    </div>
+    </body>
+    </html>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="application/javascript"></script>
+
+
+
+    <script src="./static/siriwave.js"></script>
+    <script src="../static/js/src/howler.core.js"></script>
+    <script src="./static/player.js"></script>
+    <script>
+        var elms = ['track', 'timer', 'duration', 'playBtn', 'pauseBtn', 'prevBtn', 'nextBtn', 'playlistBtn', 'volumeBtn', 'progress', 'bar', 'wave', 'loading', 'playlist', 'list', 'volume', 'barEmpty', 'barFull', 'sliderBtn'];
+        elms.forEach(function (elm) {
+            window[elm] = document.getElementById(elm);
+        });
+        // Setup our new audio player class and pass it the playlist.
+        var player;
+
+        {#var getplayer = function (playlist) {#}
+        {##}
+        {#    player = new Player(playlist);#}
+        {#    return player#}
+        {#}#}
+            {#player = getplayer(playlist)#}
+
+            // Bind our player controls.
+            playBtn.addEventListener('click', function () {
+                player.play();
+            });
+            pauseBtn.addEventListener('click', function () {
+                player.pause();
+            });
+            prevBtn.addEventListener('click', function () {
+                player.skip('prev');
+            });
+            nextBtn.addEventListener('click', function () {
+                player.skip('next');
+            });
+            waveform.addEventListener('click', function (event) {
+                player.seek(event.clientX / window.innerWidth);
+            });
+            playlistBtn.addEventListener('click', function () {
+                player.togglePlaylist();
+            });
+            playlist.addEventListener('click', function () {
+                player.togglePlaylist();
+            });
+            volumeBtn.addEventListener('click', function () {
+                player.toggleVolume();
+            });
+            volume.addEventListener('click', function () {
+                player.toggleVolume();
+            });
+
+            // Setup the event listeners to enable dragging of volume slider.
+            barEmpty.addEventListener('click', function (event) {
+                var per = event.layerX / parseFloat(barEmpty.scrollWidth);
+                player.volume(per);
+            });
+            sliderBtn.addEventListener('mousedown', function () {
+                window.sliderDown = true;
+            });
+            sliderBtn.addEventListener('touchstart', function () {
+                window.sliderDown = true;
+            });
+            volume.addEventListener('mouseup', function () {
+                window.sliderDown = false;
+            });
+            volume.addEventListener('touchend', function () {
+                window.sliderDown = false;
+            });
+
+            function test(js) {
+                {#attr = JSON.parse(js)#}
+                var playlist = []
+                js.forEach(function (content) {
+                    console.log(",obj,title:" + content.audio_detail_title)
+                    console.log(",obj,url:" + content.audio_detail_url)
+
+                    playlist.push({title: content.audio_detail_title, src: content.audio_detail_url})
+                })
+                console.log("lengh:" + playlist.length)
+                player = new Player(playlist)
+            }
+
+            {#var temp = {{ js }}#}
+            window.onload = function (ev) {
+                alert("id:" +{{ id }})
+                htmlobj = $.ajax({url: "../getAudioListById/?id=" + {{ id }}, async: false})
+                {#alert("alert:" + htmlobj.responseText)#}
+                str = htmlobj.responseText
+                attr = JSON.parse(str)
+                test(attr)
+            }
+            var move = function (event) {
+                if (window.sliderDown) {
+                    var x = event.clientX || event.touches[0].clientX;
+                    var startX = window.innerWidth * 0.05;
+                    var layerX = x - startX;
+                    var per = Math.min(1, Math.max(0, layerX / parseFloat(barEmpty.scrollWidth)));
+                    player.volume(per);
+                }
+            };
+
+            volume.addEventListener('mousemove', move);
+            volume.addEventListener('touchmove', move);
+            // Setup the "waveform" animation.
+            var wave = new SiriWave({
+                container: waveform,
+                width: window.innerWidth,
+                height: window.innerHeight * 0.3,
+                cover: true,
+                speed: 0.03,
+                amplitude: 0.7,
+                frequency: 2
+            });
+            wave.start();
+
+            // Update the height of the wave animation.
+            // These are basically some hacks to get SiriWave.js to do what we want.
+            var resize = function () {
+                var height = window.innerHeight * 0.3;
+                var width = window.innerWidth;
+                wave.height = height;
+                wave.height_2 = height / 2;
+                wave.MAX = wave.height_2 - 4;
+                wave.width = width;
+                wave.width_2 = width / 2;
+                wave.width_4 = width / 4;
+                wave.canvas.height = height;
+                wave.canvas.width = width;
+                wave.container.style.margin = -(height / 2) + 'px auto';
+
+                // Update the position of the slider.
+                var sound = player.playlist[player.index].howl;
+                if (sound) {
+                    var vol = sound.volume();
+                    var barWidth = (vol * 0.9);
+                    sliderBtn.style.left = (window.innerWidth * barWidth + window.innerWidth * 0.05 - 25) + 'px';
+                }
+            };
+            window.addEventListener('resize', resize);
+            resize();
+
+    </script>
+{% endblock %}
+
+

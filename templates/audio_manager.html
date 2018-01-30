@@ -1,0 +1,216 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "_base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-6 column">
+                <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal"
+                        id="btn_add-audio-detail"
+                        data-target="#add-audio-detail">add-audio-detail
+                </button>
+                <div class="list-group">
+                    <a href="#" class="list-group-item active">Home</a>
+                    <div class="list-group-item">
+                        AudioDetail
+                    </div>
+                    {% for ad in adlist %}
+                        {% set title=ad.id %}
+                        <a class="list-group-item" href="javascript:void(0)"
+                           onclick="openWin('{{ title }}',this)">
+
+
+                            <table class="table table-hover table-striped table-bordered table-responsive"
+                                   style="width: 100%" id="table-index{{ ad.id }}">
+                                <tbody align="center" id="tbody">
+                                <tr align="left">
+                                    <td style="visibility: hidden; width: 1%"
+                                        id="td-detail-id-index{{ ad.id }}">{{ ad.id }}</td>
+                                    <td style="visibility: hidden ;width: 1%"
+                                        id="td-detail-preimg-table-index{{ ad.id }}">{{ ad.audio_info_preimg }}</td>
+                                    <td style="width: 28%" align="center"
+                                        id="td-detail-title-table-index{{ ad.id }}">{{ ad.audio_info_title }}</td>
+                                    <td style="width: 60%" align="center"
+                                        id="td-detail-describe-table-index{{ ad.id }}"> {{ ad.audio_info_describe }}</td>
+
+                                    <td style="width: 15%" align="center">
+                                        <button class="btn bg-primary" id="index{{ ad.id }}" onclick="clickEdit(this)">
+                                            delete
+                                        </button>
+                                    </td>
+                                    <td style="width: 15%" align="center">
+                                        <button class="btn bg-primary" id="index{{ ad.id }}" onclick="clickEdit(this)">
+                                            edit
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </a>
+                    {% endfor %}
+                    <a class="list-group-item active"> <span class="badge">{{ adlist|length }}</span> Help</a>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 column">
+                <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal"
+                        data-target="#add-audio-info">add-audio-info
+                </button>
+                <div class="list-group" id="audio_info_list">
+                    <a href="#" class="list-group-item active">Home</a>
+                    <div class="list-group-item">
+                        List header
+                    </div>
+                    <div class="list-group-item">
+                    </div>
+                    <a class="list-group-item active"> <span class="badge">14</span> Help</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add-audio-info" tabindex="-1" role="dialog" aria-labelledby="add-audio-info-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="add-audio-info-label">Add AudioInfo</h4>
+                </div>
+                <form class="form" action="{{ url_for('submit_audio_info') }}" method="post" role="form">
+                    <div class="modal-body">
+                        {{ aiform.hidden_tag() }}
+                        {{ wtf.form_errors(aiform, hiddens="only") }}
+                        {{ wtf.form_field(aiform.audio_info_title) }}
+                        {{ wtf.form_field(aiform.audio_info_url) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        {{ wtf.form_field(aiform.submit, class='btn btn-primary') }}
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div class="modal fade" id="add-audio-detail" tabindex="-1" role="dialog" aria-labelledby="add-audio-detail-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="add-audio-detail-label">Add AudioDetail</h4>
+                </div>
+                <form class="form" action="{{ url_for('submit_audio_detail') }}" method="post" role="form">
+                    <div class="modal-body">
+                        {{ adeform.hidden_tag() }}
+                        {{ wtf.form_errors(adeform, hiddens="only") }}
+                        {{ wtf.form_field(adeform.audio_detail_title) }}
+                        {{ wtf.form_field(adeform.audio_detail_icon_url) }}
+                        {{ wtf.form_field(adeform.audio_detail_describe) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        {{ wtf.form_field(adeform.submit, class='btn btn-primary') }}
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="application/javascript">
+
+
+        function openWin(tag, obj) {
+            alert("tag:" + tag)
+            obj.target = "_blank";
+            {#obj.href = "http://127.0.0.1:5000/getAudioListById//?id=" + tag;#}
+            htmlobj = $.ajax({url: "http://127.0.0.1:5000/getAudioListById/?id=" + tag, async: false})
+            {#alert("alert:" + htmlobj.responseText)#}
+            str = htmlobj.responseText
+            attr = JSON.parse(str)
+            {#$("#content_h4").html(htmlobj.responseText)#}
+            $("#audio_info_list").empty()
+            $.each(attr, function (index, content) {
+                {#alert("index:" + index + ",content:" + content.name)#}
+                var html = $("<div class=\"list-group-item\"></div>")
+                var trHtml = $("<tr agilgn=\"center\"></tr>")
+                var tdDetailHtml = $("<td style=\"width: 80%\"></td>").text(content.audio_detail_title)
+                var tdDelHtml = $("<td style=\"width: 20%\" id=\"detail" + content.id + "\"></td>")
+                var tdEditHtml = $("<td style=\"width: 20%\" id=\"detail" + content.id + "\"></td>")
+                var btnEditHtml = $("<button class=\"btn bg-primary\"></button>").text("edit")
+                var btnDeltHtml = $("<button class=\"btn bg-primary\"></button>").text("delete")
+                tdEditHtml.append(btnEditHtml)
+                tdDelHtml.append(btnDeltHtml)
+                trHtml.append(tdDetailHtml)
+                trHtml.append(tdDelHtml)
+                trHtml.append(tdEditHtml)
+
+                tdEditHtml.on("click", function () {
+                    clickClickDeteilItem(content.id, content.audio_detail_title, content.audio_detail_url)
+                })
+
+                var bodyHtml = $("<tbody align=\"center\"></tbody>")
+                var tableHtml = $("<table class=\"table table-hover table-striped table-bordered table-responsive\"></table>")
+                bodyHtml.append(trHtml)
+                tableHtml.append(bodyHtml)
+                html.append(tableHtml)
+                {#html.on("click", clickClickDeteilItem(content.id, content.audio_title, content.audio_detail_title))#}
+                $("#audio_info_list").append(html)
+
+            })
+
+        }
+
+        function clickEdit(obj) {
+            var id = $(obj).attr("id")
+            console.log("id:" + id)
+            var table_id = "table-" + id
+            var td_detail_id_index_id = "td-detail-id-" + id
+            var td_detail_title_table_index_id = "td-detail-title-table-" + id
+            var td_detail_describe_table_index_id = "td-detail-describe-table-" + id
+            var td_detail_preimg_table_index_id = "td-detail-preimg-table-" + id
+            var id = document.getElementById(td_detail_id_index_id)
+            var title = document.getElementById(td_detail_title_table_index_id)
+            var describe = document.getElementById(td_detail_describe_table_index_id)
+            var preimg = document.getElementById(td_detail_preimg_table_index_id)
+            $('#audio_detail_title').val(title.innerText)
+            $('#audio_detail_describe').val(describe.innerText)
+            console.log("table-id:" + table_id + ",id:" + id.innerHTML)
+            var title = document.getElementById(td_detail_title_table_index_id)
+            console.log("table-id:" + table_id + ",title:" + title.innerText)
+            console.log("table-id:" + table_id + ",describe:" + describe.innerText)
+            console.log("table-id:" + table_id + ",preimg:" + preimg.innerHTML)
+            $('#audio_detail_icon_url').val(preimg.innerHTML)
+            $('#add-audio-detail').modal('show');
+
+        }
+
+        function clickClickDeteilItem(id, audio_detail_title, audio_detail_url) {
+            $('#audio_info_title').val(audio_detail_title)
+            $('#audio_info_url').val(audio_detail_url)
+            $('#add-audio-info').modal('show')
+        }
+
+        clickGroupItem = function () {
+            $(".list-group-item").on("click", function () {
+                $(".list-group-item").removeClass("active");
+                $(this).addClass("active")
+
+                var items = document.getElementsByClassName("list-group-item active");
+                if (items != undefined && items.length === 1) {
+                    console.log("selected item is:", items[0]);
+                }
+            })
+        }
+
+
+    </script>
+{% endblock %}
