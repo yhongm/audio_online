@@ -1,4 +1,4 @@
-mport requests
+import requests
 from flask import Flask, render_template, request, redirect, url_for, g
 from flask_bootstrap import Bootstrap
 
