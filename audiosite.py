@@ -44,7 +44,7 @@ def git_hook():
     # return render_template("test.html", rwd=pwd, data=data)
     # return render_template("error.html")
     d = request.get_data()
-    print("d:" + d)
+    print("d:" + str(d))
     return "success"
 
 
