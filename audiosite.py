@@ -43,8 +43,8 @@ def git_hook():
     # data = request.data
     # return render_template("test.html", rwd=pwd, data=data)
     # return render_template("error.html")
-    data = request.get_data()
-    return json.dumps(data)
+
+    return request.get_data()
 
 
 @app.route('/error')
