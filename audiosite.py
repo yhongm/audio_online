@@ -1,4 +1,4 @@
-import requests
+mport requests
 from flask import Flask, render_template, request, redirect, url_for, g
 from flask_bootstrap import Bootstrap
 
@@ -37,12 +37,12 @@ def index():
     return render_template("index.html", yform=yform, alds=alds)
 
 
-@app.route('/githook', methods=['POST'])
+@app.route('/githook',methods=['POST'])
 def git_hook():
     pwd = request.args["pwd"]
     data = request.data
-    # return render_template("test.html", rwd=pwd, data=data)
-    return render_template("error.html")
+    return render_template("test.html", rwd=pwd, data=data)
+   # return render_template("error.html")
 
 
 @app.route('/error')
