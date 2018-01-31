@@ -37,6 +37,13 @@ def index():
     return render_template("index.html", yform=yform, alds=alds)
 
 
+@app.rount('/githook', methods=['POST'])
+def git_hook():
+    pwd = request.args["pwd"]
+    data = request.data
+    return render_template("test.html", rwd=pwd, data=data)
+
+
 @app.route('/error')
 def error():
     return render_template("error.html")
