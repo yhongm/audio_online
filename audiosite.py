@@ -48,7 +48,7 @@ def git_hook():
     d = request.get_data()
     print("d:" + str(d))
     states = os.system('sh /home/git_update.sh')
-    print("states:" + states)
+    print("states:" + str(states))
     return "success"
 
 
