@@ -6,6 +6,8 @@ from c_form import YForm, ManagerForm, AudioInfoForm, AudioDetailForm
 import audio_db
 import manage_db
 from models import *
+import os
+
 import json
 
 
@@ -45,6 +47,8 @@ def git_hook():
     # return render_template("error.html")
     d = request.get_data()
     print("d:" + str(d))
+    states = os.system('sh /home/git_update.sh')
+    print("states:" + states)
     return "success"
 
 
