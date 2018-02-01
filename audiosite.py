@@ -47,7 +47,7 @@ def git_hook():
     # return render_template("error.html")
     d = request.get_data()
     print("d:" + str(d))
-    states = os.system('sh /var/www/yhm_audio/git_update.sh')
+    states = os.system('sh /home/git_update.sh')
     print("states:" + str(states))
     return "success"
 
