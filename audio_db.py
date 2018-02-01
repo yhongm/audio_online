@@ -105,7 +105,24 @@ def getAudioListById(app, g, id):
         session.close()
     return query.filter(AudioDetaiListlDb.audio_list_db_id == id).all()
 
+def getAllAudioClassifys(app,g):
 
+    _,Session=connect(app)
+    session=Session()
+    try:
+        query=session.query(AudioClassifyDb).order_by(AudioClassifyDb.id)
+    finally:
+        session.close()
+    return query.all()
+
+def getAudioByClassifyId(app,g,classifyId):
+    _,Session=get(app,g)
+    session=Session()
+    try:
+        query=session.query(AudioListDb).order_by(AudioListDb.id)
+    finally:
+        session.close()
+    return query.filter(AudioListDb.audio_classify_db_id==classifyId).all()
 
 
 

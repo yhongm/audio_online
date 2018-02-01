@@ -21,6 +21,9 @@
                     <li><a href="#">link4</a></li>
                     <li class="divider"></li>
                     <li><a href="#">link5</a></li>
+                    {% for classify in classifys %}
+                        <li><a href="javascript:void(0)" onclick="menu('{{ classify.id }}')">{{ classify.audio_classify_name }}</a></li>
+                    {% endfor %}
                 </ul>
             </li>
             <li class="active"><a href="#">menu4</a></li>
@@ -78,3 +81,23 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+{% block scripts %}
+
+    <script type="application/javascript">
+
+        function menu(id) {
+            alert("id:"+id)
+            $.post("../get_audio_classify",{"id":id},function (data) {
+                alert(data)
+            },"json")
+            {#    .complete(function () {#}
+            {#    alert("complete")#}
+            {#}).error(function (msg) {#}
+            {#    alert("error111:"+msg.value)#}
+            {#})#}
+
+
+        }
+
+    </script>
+{% endblock %}

@@ -35,8 +35,9 @@ def index():
 
     # list = db.getAllValue(app, g)
     alds = audio_db.getAllAudioList(app, g)
+    classifys=audio_db.getAllAudioClassifys(app,g)
     yform = YForm()
-    return render_template("index.html", yform=yform, alds=alds)
+    return render_template("index.html", yform=yform, alds=alds,classifys=classifys)
 
 
 @app.route('/githook', methods=['POST'])
@@ -85,6 +86,15 @@ def add():
     audio_db.addValue(app, g, value=yform.yc.data)
 
     return redirect(url_for('index'))
+
+@app.route('/get_audio_classify',methods=['POST','GET'])
+def get_audio_classify():
+    res=request.get_data(parse_form_data=False,as_text=True)
+    print("res:"+res)
+    id=json.loads(res)['id']
+    print("id:"+id)
+    return id
+
 
 
 @app.route('/submit_audio_info', methods=['POST'])
