@@ -14,16 +14,10 @@
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">link1</a></li>
-                    <li><a href="#">link2</a></li>
-                    <li><a href="#">link3</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">link4</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">link5</a></li>
                     {% for classify in classifys %}
                         <li><a href="javascript:void(0)"
                                onclick="menu('{{ classify.id }}')">{{ classify.audio_classify_name }}</a></li>
+                        <li class="divider"></li>
                     {% endfor %}
                 </ul>
             </li>
@@ -89,9 +83,20 @@
 
         function menu(id) {
             alert("id:" + id)
+            $("#index_content").empty()
             $.post("../get_audio_classify", "{\"id\":" + id + "}", function (data) {
-                alert(JSON.stringify(data))
-            }, "json")
+
+                    alert(JSON.stringify(data))
+                    {#response = data.responseText#}
+                    {#js = JSON.parse(response)#}
+                    $.each(data, function (index, content) {
+                        console.log("index:" + index, +"content.title:" + content.audio_info_title)
+                    })
+                }
+
+                ,
+                "json"
+            )
         }
 
     </script>
