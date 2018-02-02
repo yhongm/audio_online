@@ -7,7 +7,7 @@
     <div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="#">menu1</a></li>
-            <li><a href="#">menu2</a></li>
+            <li><a href="javascript:void (0)" onclick="menu(1)">menu2</a></li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     menu3
@@ -22,7 +22,8 @@
                     <li class="divider"></li>
                     <li><a href="#">link5</a></li>
                     {% for classify in classifys %}
-                        <li><a href="javascript:void(0)" onclick="menu('{{ classify.id }}')">{{ classify.audio_classify_name }}</a></li>
+                        <li><a href="javascript:void(0)"
+                               onclick="menu('{{ classify.id }}')">{{ classify.audio_classify_name }}</a></li>
                     {% endfor %}
                 </ul>
             </li>
@@ -47,7 +48,8 @@
                     <li class="divider">
                     </li>
                     <li>
-                        <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#add-youtube">
+                        <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal"
+                                data-target="#add-youtube">
                             button
                         </button>
                     </li>
@@ -86,17 +88,10 @@
     <script type="application/javascript">
 
         function menu(id) {
-            alert("id:"+id)
-            $.post("../get_audio_classify",{"id":id},function (data) {
-                alert(data)
-            },"json")
-            {#    .complete(function () {#}
-            {#    alert("complete")#}
-            {#}).error(function (msg) {#}
-            {#    alert("error111:"+msg.value)#}
-            {#})#}
-
-
+            alert("id:" + id)
+            $.post("../get_audio_classify", "{\"id\":" + id + "}", function (data) {
+                alert(JSON.stringify(data))
+            }, "json")
         }
 
     </script>

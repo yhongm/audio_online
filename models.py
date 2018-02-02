@@ -55,6 +55,22 @@ class AudioDetaiListlDb(Base):
         return temp
 
 
+class AudioListDbDec(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, AudioListDb):
+            print("")
+            return {
+                'id': o.id,
+                'audio_info_title': o.audio_info_title,
+                'audio_info_author': o.audio_info_author,
+                'audio_info_play_author': o.audio_info_play_author,
+                'audio_info_describe': o.audio_info_describe,
+                'audio_info_preimg': o.audio_info_preimg,
+                'audio_info_url': o.audio_info_url
+            }
+        return json.JSONEncoder.default(o)
+
+
 class AudioDetaiListlDbDec(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, AudioDetaiListlDb):

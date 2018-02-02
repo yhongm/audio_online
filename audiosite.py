@@ -35,9 +35,9 @@ def index():
 
     # list = db.getAllValue(app, g)
     alds = audio_db.getAllAudioList(app, g)
-    classifys=audio_db.getAllAudioClassifys(app,g)
+    classifys = audio_db.getAllAudioClassifys(app, g)
     yform = YForm()
-    return render_template("index.html", yform=yform, alds=alds,classifys=classifys)
+    return render_template("index.html", yform=yform, alds=alds, classifys=classifys)
 
 
 @app.route('/githook', methods=['POST'])
@@ -87,14 +87,30 @@ def add():
 
     return redirect(url_for('index'))
 
-@app.route('/get_audio_classify',methods=['POST','GET'])
-def get_audio_classify():
-    res=request.get_data(parse_form_data=False,as_text=True)
-    print("res:"+res)
-    id=json.loads(res)['id']
-    print("id:"+id)
-    return id
 
+@app.route('/get_audio_classify', methods=['POST', 'GET'])
+def get_audio_classify():
+    print("get_audio_classify")
+    # res = request.get_data(parse_form_data=False, as_text=True)
+    # print("res:" + res)
+    # id = json.loads(res)['id']
+    # print("id:" + id)
+    try:
+        # id = request.args["id"]
+        data = request.get_data()
+        # print("get_audio_classify,data:" + data)
+        # print("data:" + str(data))
+        dict = json.loads(data)
+        # uid = request.args["uid"]
+        # print("id:" + id + ",uid:" + uid)
+        id = dict['id']
+        print("id:" + str(id))
+    except Exception as e:
+        print("get_audio_classify e:" + str(e))
+    j = {"result": "success"}
+    alds_by_claaifyid = audio_db.getAudioByClassifyId(app, g, id)
+    print("length:" + str(len(alds_by_claaifyid)))
+    return json.dumps(alds_by_claaifyid, cls=AudioListDbDec, ensure_ascii=False)
 
 
 @app.route('/submit_audio_info', methods=['POST'])
