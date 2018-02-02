@@ -86,7 +86,7 @@
             $("#index_content").empty()
             $.post("../get_audio_classify", "{\"id\":" + id + "}", function (data) {
 
-                    alert(JSON.stringify(data))
+                    {#alert(JSON.stringify(data))#}
                     {#response = data.responseText#}
                     {#js = JSON.parse(response)#}
                     $.each(data, function (index, content) {
