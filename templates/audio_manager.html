@@ -132,7 +132,7 @@
             alert("tag:" + tag)
             obj.target = "_blank";
             {#obj.href = "http://127.0.0.1:5000/getAudioListById//?id=" + tag;#}
-            htmlobj = $.ajax({url: "http://127.0.0.1:5000/getAudioListById/?id=" + tag, async: false})
+            htmlobj = $.ajax({url: "../getAudioListById/?id=" + tag, async: false})
             {#alert("alert:" + htmlobj.responseText)#}
             str = htmlobj.responseText
             attr = JSON.parse(str)
