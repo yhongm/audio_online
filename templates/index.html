@@ -18,15 +18,15 @@
                                 <dt class="text-center">
                                     {{ ald.audio_info_describe }}
                                 </dt>
-                                <dd>
-                                    A description list is perfect for defining terms.
-                                </dd>
+{#                                <dd>#}
+{#                                    A description list is perfect for defining terms.#}
+{#                                </dd>#}
 
                             </dl>
-{#                            <a class="btn btn-info  active btn-block"#}
-{#                               href="{{ url_for('detail' ,audio_id=ald.id) }}">#}
-{#                                detail#}
-{#                            </a>#}
+                            <a class="btn btn-info  active btn-block"
+                               href="{{ url_for('detail' ,audio_id=ald.id) }}">
+                                detail
+                            </a>
                         </div>
                     {% else %}
                     {% endfor %}
