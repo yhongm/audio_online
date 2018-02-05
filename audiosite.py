@@ -33,7 +33,7 @@ def index():
     manage_db.init(app, g)
     # mdb = ManageDb()
     ip = request.remote_addr
-    print("ip:" + ip)
+    print("ip - - - -  >:" + ip)
     # list = db.getAllValue(app, g)
     alds = audio_db.getAllAudioList(app, g)
     classifys = audio_db.getAllAudioClassifys(app, g)
