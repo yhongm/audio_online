@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, render_template, request, redirect, url_for, g
+from flask import Flask, render_template, request, redirect, url_for, g, session
 from flask_bootstrap import Bootstrap
 
 from c_form import YForm, ManagerForm, AudioInfoForm, AudioDetailForm
@@ -32,7 +32,8 @@ def index():
     # db.init(app, g)
     manage_db.init(app, g)
     # mdb = ManageDb()
-
+    ip = request.remote_addr
+    print("ip:" + ip)
     # list = db.getAllValue(app, g)
     alds = audio_db.getAllAudioList(app, g)
     classifys = audio_db.getAllAudioClassifys(app, g)

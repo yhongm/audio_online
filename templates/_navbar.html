@@ -6,22 +6,27 @@
     </div>
     <div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="#">menu1</a></li>
-            <li><a href="javascript:void (0)" onclick="menu(1)">menu2</a></li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    menu3
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                    {% for classify in classifys %}
-                        <li><a href="javascript:void(0)"
-                               onclick="menu('{{ classify.id }}')">{{ classify.audio_classify_name }}</a></li>
-                        <li class="divider"></li>
-                    {% endfor %}
-                </ul>
-            </li>
-            <li class="active"><a href="#">menu4</a></li>
+            {% for classify in classifys %}
+                <li><a href="javascript:void(0)"
+                       onclick="menu('{{ classify.id }}')">{{ classify.audio_classify_name }}</a>
+                </li>
+            {% endfor %}
+            {#            <li class="active"><a href="#">menu1</a></li>#}
+            {#            <li><a href="javascript:void (0)" onclick="menu(1)">menu2</a></li>#}
+            {#            <li class="dropdown">#}
+            {#                <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+            {#                    menu3#}
+            {#                    <b class="caret"></b>#}
+            {#                </a>#}
+            {#                <ul class="dropdown-menu">#}
+            {#                    {% for classify in classifys %}#}
+            {#                        <li><a href="javascript:void(0)"#}
+            {#                               onclick="menu('{{ classify.id }}')">{{ classify.audio_classify_name }}</a></li>#}
+            {#                        <li class="divider"></li>#}
+            {#                    {% endfor %}#}
+            {#                </ul>#}
+            {#            </li>#}
+            {#            <li class="active"><a href="#">menu4</a></li>#}
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>
