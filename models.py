@@ -82,3 +82,10 @@ class AudioDetaiListlDbDec(json.JSONEncoder):
                 'audio_detail_url': obj.audio_detail_url
             }
         return json.JSONEncoder.default(obj)
+
+
+class ManageDb(Base):
+    __tablename__ = "manage_db"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    mAccount = Column(String, nullable=True)
+    mPwd = Column(String, nullable=True)

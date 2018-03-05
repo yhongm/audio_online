@@ -31,7 +31,7 @@ app = create_app()
 def index():
     # db.init(app, g)
     manage_db.init(app, g)
-    # mdb = ManageDb()
+    mdb = ManageDb()
     ip = request.remote_addr
     print("ip - - - -  >:" + ip)
     # list = db.getAllValue(app, g)
