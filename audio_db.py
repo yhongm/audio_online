@@ -124,6 +124,16 @@ def getAudioByClassifyId(app,g,classifyId):
         session.close()
     return query.filter(AudioListDb.audio_classify_db_id==classifyId).all()
 
+def deleteInvalidData(app,g):
+    _,Session =get(app,g)
+    session=Session()
+    try:
+        query=session.query(AudioDetaiListlDb)
+        query.filter
+    finally:
+        session.close()
+
+    return
 
 
 def getAudioDetailById(app, g, audio_id):

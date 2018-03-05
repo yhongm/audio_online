@@ -144,16 +144,22 @@ def mlogin():
     print("m account:" + str(account))
     print("m pwd:" + str(pwd))
     mal = manage_db.getPwdByAccount(app, g, account)
+    session['login_user']=account # 赋值session
+
     isRight = False
     for m in mal:
         if m.mPwd == pwd:
             isRight = True
             break
-
-    if (isRight):
-        return redirect(url_for('index'))
+    if 'login_user' in session:
+        if (isRight):
+            return redirect(url_for('index'))
+        else:
+            return redirect(url_for('error'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('index'))
+
+     # session.pop("login_user",None)
 
 
 @app.route('/detail')
@@ -227,6 +233,8 @@ def convertListToDict(ads):
 @app.route('/user/<name>')
 def user(name):
     return '<h1>hello, %s</h1>' % name
+
+
 
 
 if __name__ == '__main__':
