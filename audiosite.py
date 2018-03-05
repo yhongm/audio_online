@@ -70,13 +70,15 @@ def manager():
 
 @app.route('/audiomanager')
 def audio_manager():
-    yform = YForm()
-    aiform = AudioInfoForm()
-    adeform = AudioDetailForm()
-    adlist = audio_db.getAllAudioList(app, g)  # audio detail list
-    print("adlist:" + str(adlist[0]))
-    return render_template("audio_manager.html", yform=yform, aiform=aiform, adeform=adeform, adlist=adlist)
-
+    if 'login_user' in session:
+      yform = YForm()
+      aiform = AudioInfoForm()
+      adeform = AudioDetailForm()
+      adlist = audio_db.getAllAudioList(app, g)  # audio detail list
+      print("adlist:" + str(adlist[0]))
+      return render_template("audio_manager.html", yform=yform, aiform=aiform, adeform=adeform, adlist=adlist)
+    else:
+      return redirect(url_for('error'))
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -84,7 +86,7 @@ def add():
     print("add,yc1:" + str(yform.yc.data))
     print("add,yc2:" + str(yform.yc2.data))
     manage_db.addAccount(app, g, mAccount=str(yform.yc.data), mPwd=str(yform.yc2.data))
-    audio_db.addValue(app, g, value=yform.yc.data)
+    # audio_db.addValue(app, g, value=yform.yc.data)
 
     return redirect(url_for('index'))
 
@@ -144,20 +146,24 @@ def mlogin():
     print("m account:" + str(account))
     print("m pwd:" + str(pwd))
     mal = manage_db.getPwdByAccount(app, g, account)
-    session['login_user']=account # 赋值session
+
 
     isRight = False
     for m in mal:
         if m.mPwd == pwd:
             isRight = True
             break
-    if 'login_user' in session:
-        if (isRight):
-            return redirect(url_for('index'))
-        else:
-            return redirect(url_for('error'))
+
+    if (isRight):
+        session['login_user'] = account  # 赋值session
+        # if 'login_user' in session:
+        return redirect(url_for('audio_manager'))
+        # else:
+        #     return redirect(url_for('error'))
+
     else:
-        return redirect(url_for('index'))
+        return redirect(url_for('error'))
+
 
      # session.pop("login_user",None)
 
