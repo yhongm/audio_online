@@ -38,6 +38,8 @@ def index():
     alds = audio_db.getAllAudioList(app, g)
     classifys = audio_db.getAllAudioClassifys(app, g)
     yform = YForm()
+
+
     return render_template("index.html", yform=yform, alds=alds, classifys=classifys)
 
 
@@ -56,6 +58,7 @@ def git_hook():
 
 @app.route('/error')
 def error():
+    audio_db.deleteInvalidData(app, g)
     return render_template("error.html")
 
 

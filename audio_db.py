@@ -105,35 +105,48 @@ def getAudioListById(app, g, id):
         session.close()
     return query.filter(AudioDetaiListlDb.audio_list_db_id == id).all()
 
-def getAllAudioClassifys(app,g):
 
-    _,Session=connect(app)
-    session=Session()
+def getAllAudioClassifys(app, g):
+    _, Session = connect(app)
+    session = Session()
     try:
-        query=session.query(AudioClassifyDb).order_by(AudioClassifyDb.id)
+        query = session.query(AudioClassifyDb).order_by(AudioClassifyDb.id)
     finally:
         session.close()
     return query.all()
 
-def getAudioByClassifyId(app,g,classifyId):
-    _,Session=get(app,g)
-    session=Session()
+
+def getAudioByClassifyId(app, g, classifyId):
+    _, Session = get(app, g)
+    session = Session()
     try:
-        query=session.query(AudioListDb).order_by(AudioListDb.id)
+        query = session.query(AudioListDb).order_by(AudioListDb.id)
     finally:
         session.close()
-    return query.filter(AudioListDb.audio_classify_db_id==classifyId).all()
+    return query.filter(AudioListDb.audio_classify_db_id == classifyId).all()
 
-def deleteInvalidData(app,g):
-    _,Session =get(app,g)
-    session=Session()
+
+def deleteInvalidData(app, g):
+    _, Session = get(app, g)
+    session = Session()
     try:
-        query=session.query(AudioDetaiListlDb)
-        query.filter
+        query = session.query(AudioDetaiListlDb)
+
+        # query.filter_by((AudioDetaiListlDb.audio_detail_title[0:4] == "http"))
+        dbs = query.all()
+        print("dbs:" + str(len(dbs)))
+        for db in dbs:
+            if db.audio_detail_url != None :
+               print("db:" + str(db.audio_detail_url[0:4]))
+               if str(db.audio_detail_url[0:4])!= 'http':
+                   print("delete db:"+str(db))
+                   session.delete(db)
+                   session.commit()
+
+        # for db in dbs:
+        #     session.delete(db)
     finally:
         session.close()
-
-    return
 
 
 def getAudioDetailById(app, g, audio_id):
