@@ -100,10 +100,11 @@ def getAudioListById(app, g, id):
     _, Session = get(app, g)
     session = Session()
     try:
-        query = session.query(AudioDetaiListlDb).order_by(AudioDetaiListlDb.audio_detail_title)
+        query = session.query(AudioDetaiListlDb).order_by(AudioDetaiListlDb.id)
     finally:
         session.close()
-    return query.filter(AudioDetaiListlDb.audio_list_db_id == id).all()
+
+    return  list(reversed(query.filter(AudioDetaiListlDb.audio_list_db_id == id).all()))
 
 
 def getAllAudioClassifys(app, g):
@@ -136,12 +137,12 @@ def deleteInvalidData(app, g):
         dbs = query.all()
         print("dbs:" + str(len(dbs)))
         for db in dbs:
-            if db.audio_detail_url != None :
-               print("db:" + str(db.audio_detail_url[0:4]))
-               if str(db.audio_detail_url[0:4])!= 'http':
-                   print("delete db:"+str(db))
-                   session.delete(db)
-                   session.commit()
+            if db.audio_detail_url != None:
+                print("db:" + str(db.audio_detail_url[0:4]))
+                if str(db.audio_detail_url[0:4]) != 'http':
+                    print("delete db:" + str(db))
+                    session.delete(db)
+                    session.commit()
 
         # for db in dbs:
         #     session.delete(db)
