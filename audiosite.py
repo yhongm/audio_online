@@ -183,7 +183,7 @@ def detail():
 @app.route('/go_audio_play')
 def audio_play():
     id = request.args['id']
-
+    index = request.args['index']
     ads = audio_db.getAudioListById(app, g, id)
     ab = ads[0].audio_detail_title
 
@@ -191,8 +191,8 @@ def audio_play():
     # print("ads:" + str(ads.__dict__))
     js = json.dumps(ads, cls=AudioDetaiListlDbDec, ensure_ascii=False)
     print("js:" + js)
-
-    return render_template("audio_play.html", js=js, id=id)
+    print("go_audio_play,index:"+index)
+    return render_template("audio_play.html", js=js, id=id,index=index-1)
 
 
 # @app.route('/c_audio_detail')

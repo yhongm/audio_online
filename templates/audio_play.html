@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="user-scalable=no">
-        <title>Howler.js Audio Player</title>
+        <title>player</title>
         <link rel="stylesheet" href="./static/css/styles.css">
     </head>
     <body>
@@ -75,7 +75,7 @@
 
             // Bind our player controls.
             playBtn.addEventListener('click', function () {
-                player.play();
+                player.play({{ index }});
             });
             pauseBtn.addEventListener('click', function () {
                 player.pause();
