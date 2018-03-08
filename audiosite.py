@@ -39,7 +39,7 @@ def index():
     classifys = audio_db.getAllAudioClassifys(app, g)
     yform = YForm()
 
-
+    print("index:" + str(len(alds)))
     return render_template("index.html", yform=yform, alds=alds, classifys=classifys)
 
 
@@ -74,14 +74,15 @@ def manager():
 @app.route('/audiomanager')
 def audio_manager():
     if 'login_user' in session:
-      yform = YForm()
-      aiform = AudioInfoForm()
-      adeform = AudioDetailForm()
-      adlist = audio_db.getAllAudioList(app, g)  # audio detail list
-      print("adlist:" + str(adlist[0]))
-      return render_template("audio_manager.html", yform=yform, aiform=aiform, adeform=adeform, adlist=adlist)
+        yform = YForm()
+        aiform = AudioInfoForm()
+        adeform = AudioDetailForm()
+        adlist = audio_db.getAllAudioList(app, g)  # audio detail list
+        print("adlist:" + str(adlist[0]))
+        return render_template("audio_manager.html", yform=yform, aiform=aiform, adeform=adeform, adlist=adlist)
     else:
-      return redirect(url_for('error'))
+        return redirect(url_for('error'))
+
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -150,7 +151,6 @@ def mlogin():
     print("m pwd:" + str(pwd))
     mal = manage_db.getPwdByAccount(app, g, account)
 
-
     isRight = False
     for m in mal:
         if m.mPwd == pwd:
@@ -167,8 +167,7 @@ def mlogin():
     else:
         return redirect(url_for('error'))
 
-
-     # session.pop("login_user",None)
+    # session.pop("login_user",None)
 
 
 @app.route('/detail')
@@ -242,8 +241,6 @@ def convertListToDict(ads):
 @app.route('/user/<name>')
 def user(name):
     return '<h1>hello, %s</h1>' % name
-
-
 
 
 if __name__ == '__main__':

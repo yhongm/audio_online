@@ -145,6 +145,8 @@ def deleteInvalidData(app, g):
 
         # for db in dbs:
         #     session.delete(db)
+
+
     finally:
         session.close()
 
