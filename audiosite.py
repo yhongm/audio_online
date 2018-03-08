@@ -192,7 +192,7 @@ def audio_play():
     js = json.dumps(ads, cls=AudioDetaiListlDbDec, ensure_ascii=False)
     print("js:" + js)
     print("go_audio_play,index:"+index)
-    return render_template("audio_play.html", js=js, id=id,index=index-1)
+    return render_template("audio_play.html", js=js, id=id,index=(int(index)-1))
 
 
 # @app.route('/c_audio_detail')
