@@ -221,6 +221,7 @@ body {
   top: 50%;
   left: 0;
   margin: -180px auto;
+  overflow-y: scroll;
 }
 .list-song {
   width: 100%;
